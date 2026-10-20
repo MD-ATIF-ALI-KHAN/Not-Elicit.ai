@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Not-Elicit.ai local data (SQLite database and uploaded PDFs)
+/data/
+!.env.example

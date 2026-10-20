@@ -1,0 +1,700 @@
+{
+ "meta": {
+  "count": 5603,
+  "page": 1,
+  "per_page": 2
+ },
+ "results": [
+  {
+   "id": "https://openalex.org/W4319037379",
+   "doi": "https://doi.org/10.4274/ejgg.galenos.2022.2022-9-9",
+   "display_name": "The Potential and Challenges of Creatine Supplementation for Cognition/Memory in Older Adults",
+   "publication_year": 2023,
+   "authorships": [
+    {
+     "author": {
+      "display_name": "Marco Machado"
+     }
+    },
+    {
+     "author": {
+      "display_name": "Rafael Pereira"
+     }
+    }
+   ],
+   "primary_location": {
+    "landing_page_url": "https://doi.org/10.4274/ejgg.galenos.2022.2022-9-9",
+    "source": {
+     "display_name": "European Journal of Geriatrics and Gerontology"
+    }
+   },
+   "best_oa_location": {
+    "pdf_url": "https://doi.org/10.4274/ejgg.galenos.2022.2022-9-9",
+    "landing_page_url": "https://doi.org/10.4274/ejgg.galenos.2022.2022-9-9"
+   },
+   "cited_by_count": 4,
+   "type": "article",
+   "abstract_inverted_index": {
+    "2000": [
+     29
+    ],
+    "EBSCO,": [
+     0
+    ],
+    "Medline,": [
+     1
+    ],
+    "BioMed": [
+     2
+    ],
+    "central,": [
+     3
+    ],
+    "and": [
+     4,
+     17,
+     20,
+     25,
+     47,
+     52
+    ],
+    "Science": [
+     5
+    ],
+    "Direct.Inclusion": [
+     6
+    ],
+    "criteria": [
+     7
+    ],
+    "specified": [
+     8
+    ],
+    "peer-reviewed": [
+     9
+    ],
+    "studies": [
+     10
+    ],
+    "investigating": [
+     11
+    ],
+    "creatine": [
+     12,
+     15
+    ],
+    "metabolism": [
+     13
+    ],
+    "and/or": [
+     14
+    ],
+    "supplementation,": [
+     16
+    ],
+    "assessing": [
+     18
+    ],
+    "cognition,": [
+     19
+    ],
+    "memory": [
+     21
+    ],
+    "in": [
+     22
+    ],
+    "old": [
+     23
+    ],
+    "adults,": [
+     24
+    ],
+    "published": [
+     26
+    ],
+    "between": [
+     27
+    ],
+    "January,": [
+     28
+    ],
+    "to": [
+     30
+    ],
+    "September,": [
+     31
+    ],
+    "2022.Each": [
+     32
+    ],
+    "author": [
+     33
+    ],
+    "searched": [
+     34
+    ],
+    "for": [
+     35
+    ],
+    "articles": [
+     36,
+     51,
+     63
+    ],
+    "separately": [
+     37
+    ],
+    "based": [
+     38
+    ],
+    "on": [
+     39
+    ],
+    "the": [
+     40,
+     58,
+     66
+    ],
+    "descriptors": [
+     41
+    ],
+    "\"creatine": [
+     42
+    ],
+    "supplementation\",": [
+     43
+    ],
+    "\"old": [
+     44
+    ],
+    "people\",": [
+     45
+    ],
+    "\"elderly\",": [
+     46
+    ],
+    "\"aging\".After": [
+     48
+    ],
+    "removing": [
+     49
+    ],
+    "duplicate": [
+     50
+    ],
+    "abstracts": [
+     53
+    ],
+    "that": [
+     54
+    ],
+    "did": [
+     55
+    ],
+    "not": [
+     56
+    ],
+    "meet": [
+     57
+    ],
+    "inclusion": [
+     59
+    ],
+    "criteria,": [
+     60
+    ],
+    "only": [
+     61
+    ],
+    "common": [
+     62
+    ],
+    "selected": [
+     64
+    ],
+    "by": [
+     65
+    ],
+    "authors": [
+     67
+    ],
+    "were": [
+     68
+    ],
+    "adopted.": [
+     69
+    ]
+   }
+  },
+  {
+   "id": "https://openalex.org/W4417451430",
+   "doi": "https://doi.org/10.1093/nutrit/nuaf239",
+   "display_name": "Creatine Supplementation and Cognition: Aligning Methodological Concerns with Recent Evidence",
+   "publication_year": 2025,
+   "authorships": [
+    {
+     "author": {
+      "display_name": "Marco Machado"
+     }
+    }
+   ],
+   "primary_location": {
+    "landing_page_url": "https://doi.org/10.1093/nutrit/nuaf239",
+    "source": {
+     "display_name": "Nutrition Reviews"
+    }
+   },
+   "best_oa_location": null,
+   "cited_by_count": 1,
+   "type": "article",
+   "abstract_inverted_index": {
+    "To": [
+     0
+    ],
+    "The": [
+     1
+    ],
+    "Editor—": [
+     2
+    ],
+    "We": [
+     3,
+     126
+    ],
+    "read": [
+     4
+    ],
+    "with": [
+     5,
+     87
+    ],
+    "great": [
+     6
+    ],
+    "interest": [
+     7
+    ],
+    "the": [
+     8,
+     29,
+     77,
+     114,
+     133
+    ],
+    "recent": [
+     9
+    ],
+    "systematic": [
+     10
+    ],
+    "review": [
+     11
+    ],
+    "by": [
+     12
+    ],
+    "Marshall": [
+     13,
+     57,
+     128
+    ],
+    "et": [
+     14,
+     58,
+     129
+    ],
+    "al.1": [
+     15,
+     59,
+     130
+    ],
+    "on": [
+     16,
+     46
+    ],
+    "creatine": [
+     17,
+     68,
+     112,
+     139,
+     154
+    ],
+    "and": [
+     18,
+     42,
+     49,
+     69,
+     82,
+     93,
+     143,
+     168
+    ],
+    "cognition": [
+     19,
+     122,
+     158
+    ],
+    "in": [
+     20,
+     33,
+     117,
+     123,
+     159
+    ],
+    "older": [
+     21,
+     124,
+     160
+    ],
+    "adults.": [
+     22
+    ],
+    "Their": [
+     23
+    ],
+    "careful": [
+     24
+    ],
+    "synthesis": [
+     25
+    ],
+    "corroborates": [
+     26
+    ],
+    "many": [
+     27
+    ],
+    "of": [
+     28,
+     90,
+     138
+    ],
+    "methodological": [
+     30
+    ],
+    "concerns": [
+     31
+    ],
+    "raised": [
+     32
+    ],
+    "this": [
+     34
+    ],
+    "field,": [
+     35
+    ],
+    "including": [
+     36
+    ],
+    "small": [
+     37
+    ],
+    "sample": [
+     38
+    ],
+    "sizes,": [
+     39
+    ],
+    "heterogeneous": [
+     40
+    ],
+    "dosing": [
+     41
+    ],
+    "outcome": [
+     43
+    ],
+    "protocols,": [
+     44
+    ],
+    "reliance": [
+     45
+    ],
+    "cross-sectional": [
+     47
+    ],
+    "data,": [
+     48
+    ],
+    "variable": [
+     50
+    ],
+    "study": [
+     51
+    ],
+    "quality": [
+     52
+    ],
+    "that": [
+     53,
+     61,
+     76,
+     96
+    ],
+    "limit": [
+     54
+    ],
+    "causal": [
+     55
+    ],
+    "inference.": [
+     56
+    ],
+    "reported": [
+     60
+    ],
+    "most": [
+     62
+    ],
+    "studies": [
+     63
+    ],
+    "suggest": [
+     64
+    ],
+    "positive": [
+     65
+    ],
+    "associations": [
+     66
+    ],
+    "between": [
+     67
+    ],
+    "cognitive": [
+     70
+    ],
+    "domains,": [
+     71
+    ],
+    "yet": [
+     72
+    ],
+    "they": [
+     73
+    ],
+    "rightly": [
+     74
+    ],
+    "concluded": [
+     75
+    ],
+    "overall": [
+     78
+    ],
+    "evidence": [
+     79,
+     151
+    ],
+    "is": [
+     80,
+     107,
+     170
+    ],
+    "sparse": [
+     81
+    ],
+    "inconsistent.": [
+     83
+    ],
+    "This": [
+     84
+    ],
+    "conclusion": [
+     85
+    ],
+    "resonates": [
+     86
+    ],
+    "broader": [
+     88
+    ],
+    "critiques": [
+     89
+    ],
+    "trial": [
+     91
+    ],
+    "design": [
+     92
+    ],
+    "meta-analytical": [
+     94
+    ],
+    "practices": [
+     95
+    ],
+    "risk": [
+     97
+    ],
+    "overstating": [
+     98
+    ],
+    "effects.2,3": [
+     99
+    ],
+    "Furthermore,": [
+     100
+    ],
+    "mechanistic": [
+     101
+    ],
+    "plausibility": [
+     102
+    ],
+    "remains": [
+     103
+    ],
+    "uncertain": [
+     104
+    ],
+    "since": [
+     105
+    ],
+    "it": [
+     106
+    ],
+    "still": [
+     108
+    ],
+    "unresolved": [
+     109
+    ],
+    "whether": [
+     110
+    ],
+    "supplemented": [
+     111
+    ],
+    "crosses": [
+     113
+    ],
+    "blood–brain": [
+     115
+    ],
+    "barrier": [
+     116
+    ],
+    "sufficient": [
+     118
+    ],
+    "quantities": [
+     119
+    ],
+    "to": [
+     120,
+     156,
+     172
+    ],
+    "alter": [
+     121
+    ],
+    "adults.4,5": [
+     125
+    ],
+    "commend": [
+     127
+    ],
+    "for": [
+     131,
+     135
+    ],
+    "highlighting": [
+     132
+    ],
+    "need": [
+     134
+    ],
+    "objective": [
+     136
+    ],
+    "biomarkers": [
+     137
+    ],
+    "status,": [
+     140
+    ],
+    "standardized": [
+     141
+    ],
+    "dosing,": [
+     142
+    ],
+    "adequately": [
+     144
+    ],
+    "powered": [
+     145
+    ],
+    "randomized": [
+     146
+    ],
+    "controlled": [
+     147
+    ],
+    "trials.": [
+     148
+    ],
+    "Until": [
+     149
+    ],
+    "such": [
+     150
+    ],
+    "becomes": [
+     152
+    ],
+    "available,": [
+     153
+    ],
+    "supplementation": [
+     155
+    ],
+    "improve": [
+     157
+    ],
+    "adults": [
+     161
+    ],
+    "should": [
+     162
+    ],
+    "be": [
+     163
+    ],
+    "considered": [
+     164
+    ],
+    "promising": [
+     165
+    ],
+    "but": [
+     166
+    ],
+    "unproven,": [
+     167
+    ],
+    "caution": [
+     169
+    ],
+    "warranted": [
+     171
+    ],
+    "avoid": [
+     173
+    ],
+    "premature": [
+     174
+    ],
+    "clinical": [
+     175
+    ],
+    "claims.": [
+     176
+    ]
+   }
+  }
+ ]
+}
