@@ -106,36 +106,158 @@ Search works without any AI key; it uses your question as the query. The summary
 
 Found a vulnerability? Please open a private security advisory on GitHub instead of a public issue.
 
-## Development
+## How this project was built
 
-| Command | What it does |
-|---|---|
-| `npm run setup` | Interactive setup for `.env.local` |
-| `npm run dev` | Development server |
-| `npm run build` / `npm start` | Production build and server |
-| `npm test` | Unit and route-handler integration tests (Vitest) |
-| `npm run typecheck` | TypeScript check |
-| `npm run lint` | ESLint |
+### Where REA fits in
 
-### How it is built
+This project started in a [Claude Code](https://claude.com/claude-code) session with **[REA (Reverse Engineer Anything)](https://github.com/morluto/rea)** loaded. REA is an open-source toolkit that lets AI agents analyse software you can download: native binaries, managed assemblies, Android APKs, Electron/JavaScript bundles, firmware, WebAssembly, packet captures and more. It records evidence for every conclusion.
 
-- **Next.js 16 (App Router) + React 19 + Tailwind CSS 4.**
-- **Database:** one SQLite file via Node's built-in `node:sqlite`. Schema migrations run automatically on start (`src/lib/db.ts`).
-- **AI layer** (`src/lib/ai/`):
-  - Each provider offers two building blocks (`provider.ts`): "stream an answer that cites these sources" and "return JSON matching this schema".
-  - Every feature (summary, report, chat, table extraction, screening, PDF reading) is written once on top of those, in `features.ts`.
-  - The provider is chosen from the environment (`config.ts`).
-  - **OpenAI-compatible** (`openai-compatible.ts`): plain `fetch`, no extra SDK.
-    - Answers stream with inline `[n]` markers, which `citations.ts` turns into clickable citations as they arrive.
-    - Structured output is validated against Zod schemas, with one retry if it's invalid.
-    - PDFs are converted to text locally with `unpdf`.
-    - Rate limits are handled by a shared gate (`rate-gate.ts`) that honours the provider's retry hints.
-  - **Claude** (`claude.ts`): the Anthropic SDK.
-    - Native search-result citations.
-    - Structured outputs.
-    - PDFs sent as cached document blocks.
-    - Server-side refusal fallbacks.
-- **Search:** `src/lib/openalex.ts`.
+The first request was to "reverse engineer elicit.com". REA turned out to be the wrong tool for that, and the reason shaped the whole project:
+
+- **There was nothing to reverse engineer.** Elicit is a hosted web service, so its code runs on Elicit's servers, not on your computer. REA's analysis tools need a local artifact (an installer, binary, APK, bundle or capture). Without one, REA's own guidance is not to guess.
+- **Copying wasn't the goal.** Re-creating another company's code or design and putting a new name on it would infringe their copyright and trademark.
+
+So **no REA analysis was ever run against Elicit**, and this repository contains none of Elicit's code, design or assets. It is a **clean-room implementation**: built from scratch from a list of features, the kind of thing anyone can see on a product's public website. Credit to REA for kicking off the project and for its principle of only claiming what the evidence supports.
+
+### How it was built
+
+1. **Feature study:** list what an AI research assistant like this does from public information (search papers, cited summary, extraction table, PDF upload, screening, reports, chat, library).
+2. **Original design:** choose an open data source ([OpenAlex](https://openalex.org)), a local-first stack (Next.js + SQLite) and a provider-agnostic AI layer, then design the data model, API and UI from scratch.
+3. **Build in vertical slices:** search → summary → table → PDFs → projects, library, screening, reports and chat. Each slice came with unit and route-level tests.
+4. **Free-model support:** abstract the AI layer so the same features run on free APIs (Gemini, Groq, OpenRouter) or local models. Citations, structured output and PDF reading are re-implemented where those models lack Claude's native features.
+5. **Verify with real models:** run every feature end to end in a real browser against live Gemini. This found and fixed real bugs:
+   - the OpenAlex wildcard error on questions ending in "?"
+   - free-tier rate limits (fixed by reading the provider's retry hints)
+   - BibTeX imports losing their first entry after a `@comment`
+   - LaTeX symbols leaking into answers
+6. **Harden before publishing:** a security review added log-in rate limiting, http(s)-only links, upload size checks, security headers and an optional sign-up lock. A secret scan of every file and commit confirmed no API keys are published.
+
+## Architecture
+
+Not-Elicit.ai is a single Next.js application that runs on your machine. The browser talks only to your local server. The server talks to two outside services: **OpenAlex** for papers, and **the AI provider you chose** for reading and writing. Everything you create is stored locally in SQLite.
+
+### System overview
+
+```mermaid
+flowchart LR
+  subgraph Browser["Browser"]
+    UI["React UI<br/>dashboard, projects, tables, chats, library"]
+  end
+
+  subgraph Server["Next.js server (Node.js 24)"]
+    Pages["Server components<br/>render pages per user"]
+    API["Route handlers /api/*<br/>JSON + NDJSON streams"]
+    Auth["Auth<br/>scrypt passwords, hashed sessions, rate limits"]
+    Repo["Data access layer<br/>lib/repo/*"]
+    Features["AI features<br/>summary, extraction, screening, report, chat"]
+    Providers["Provider adapters<br/>Claude SDK, OpenAI-compatible fetch"]
+    Gate["Rate gate<br/>honours retry hints"]
+    PDF["PDF text extraction<br/>unpdf"]
+    OAClient["OpenAlex client<br/>filters, citation trail"]
+  end
+
+  subgraph Disk["Your computer"]
+    DB[("SQLite<br/>data/not-elicit.db")]
+    Files[("Uploaded PDFs<br/>data/uploads/")]
+    Env[/".env.local<br/>your API key"/]
+  end
+
+  subgraph Cloud["External services"]
+    OpenAlex["OpenAlex API<br/>250M+ scholarly works"]
+    LLM["Your AI provider<br/>Gemini, Groq, OpenRouter, Ollama, Claude"]
+  end
+
+  UI -->|"session cookie"| Pages
+  UI -->|"fetch + streaming"| API
+  Pages --> Auth
+  API --> Auth
+  Pages --> Repo
+  API --> Repo
+  API --> Features
+  API --> OAClient
+  Features --> Providers
+  Providers --> PDF
+  Providers --> Gate
+  Gate --> LLM
+  Env -.->|"read at startup"| Providers
+  Repo --> DB
+  API --> Files
+  OAClient --> OpenAlex
+```
+
+### What happens when you ask a question
+
+```mermaid
+sequenceDiagram
+  actor U as You
+  participant B as Browser
+  participant S as Next.js server
+  participant AI as AI provider
+  participant OA as OpenAlex
+  participant DB as SQLite
+
+  U->>B: Ask a research question (+ filters)
+  B->>S: POST /api/searches
+  S->>AI: Turn the question into a keyword query (JSON)
+  S->>OA: Search works with filters
+  S->>DB: Save search, papers and default columns
+  S-->>B: Table id
+  par Cited summary
+    B->>S: POST /api/searches/:id/summary
+    S->>AI: Stream an answer citing the top abstracts
+    S-->>B: NDJSON events (text, citation, done)
+  and Evidence table (3 papers at a time)
+    B->>S: POST /api/searches/:id/papers/:paperId/extract
+    S->>AI: Extract every column as validated JSON
+    S->>DB: Save cells with supporting quotes
+    S-->>B: Cells
+  end
+  B->>B: Mark quotes found word-for-word in the abstract as verified
+```
+
+### Data model
+
+```mermaid
+erDiagram
+  USERS ||--o{ PROJECTS : owns
+  USERS ||--o{ LIBRARY_ITEMS : saves
+  PROJECTS ||--o{ SEARCHES : "holds tables"
+  PROJECTS ||--o{ CHATS : "holds chats"
+  SEARCHES ||--o{ PAPERS : contains
+  SEARCHES ||--o{ EXTRACTION_COLUMNS : defines
+  PAPERS ||--o{ CELLS : "filled in"
+  EXTRACTION_COLUMNS ||--o{ CELLS : "one per paper"
+  PAPERS ||--o| SCREENINGS : "screened as"
+  CHATS ||--o{ CHAT_SOURCES : cites
+  CHATS ||--o{ CHAT_MESSAGES : contains
+```
+
+A *search* is one table: either a question searched on OpenAlex, or papers you picked from your library. Chats keep their own copy of each source, including text extracted from PDFs, so deleting a table never breaks a conversation.
+
+### Layers
+
+- **UI (`src/app`, `src/components`):**
+  - Server components load data for the signed-in user.
+  - Client components handle the interactive parts: the table, streaming answers, the chat and the library.
+  - `CitedText` renders Markdown answers with clickable citation numbers.
+- **API (`src/app/api`):**
+  - Every route checks the session and same-origin requests, validates input with Zod, and loads only data the user owns.
+  - Long answers stream as newline-delimited JSON events.
+- **Data (`src/lib/db.ts`, `src/lib/repo`):**
+  - One SQLite file with versioned migrations that run on start.
+  - All queries are parameterised and scoped to the user.
+- **AI (`src/lib/ai`):**
+  - Every provider offers two building blocks (`provider.ts`): *stream an answer that cites these sources*, and *return JSON matching this schema*.
+  - Every feature (summary, extraction, screening, report, chat, PDF reading) is written once on top of them (`features.ts`).
+  - **Claude** (`claude.ts`): the Anthropic SDK, with native search-result citations, structured outputs, PDFs as cached document blocks, and server-side refusal fallbacks.
+  - **Everything else** (`openai-compatible.ts`): plain `fetch` against the OpenAI-compatible Chat Completions API.
+    - Answers stream with `[n]` markers, which `citations.ts` turns into the same citation events Claude produces.
+    - JSON output is validated against Zod schemas, with one retry if it's invalid.
+    - PDFs are converted to text locally.
+    - A shared rate gate (`rate-gate.ts`) pauses every request when the provider says to slow down.
+- **Papers (`src/lib/openalex.ts`):** search with filters, plus related, citing and referenced works for the citation trail.
+
+### Code layout
 
 ```
 src/
@@ -155,6 +277,19 @@ src/
 scripts/setup.mjs             interactive .env.local setup
 tests/                        Vitest suites (AI providers and OpenAlex are faked)
 ```
+
+## Development
+
+| Command | What it does |
+|---|---|
+| `npm run setup` | Interactive setup for `.env.local` |
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build and server |
+| `npm test` | Unit and route-handler integration tests (Vitest) |
+| `npm run typecheck` | TypeScript check |
+| `npm run lint` | ESLint |
+
+The tests run every route handler against a real in-memory SQLite database, with the AI provider and OpenAlex replaced by fakes, so they need no API keys or network.
 
 ## Limits
 
