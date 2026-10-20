@@ -36,5 +36,13 @@
     "node": ">=24"
   },
   "description": "Not-Elicit.ai: an open-source AI research assistant for finding, summarizing and extracting evidence from academic papers.",
+  "homepage": "https://github.com/MD-ATIF-ALI-KHAN/Not-Elicit.ai#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MD-ATIF-ALI-KHAN/Not-Elicit.ai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MD-ATIF-ALI-KHAN/Not-Elicit.ai/issues"
+  },
   "license": "MIT"
 }
